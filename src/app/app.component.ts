@@ -1,14 +1,31 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {AzureService} from "./azure/azure.service";
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'azure-login-angular-02';
+
+
+  constructor(
+    public azureService: AzureService,
+  ) {
+
+    this.azureService
+      .authStatus$
+      .subscribe(() => {
+        console.log('this.authService.instance.getAllAccounts()', this.azureService.authService.instance.getAllAccounts())
+      });
+  }
+
+  async _btnLogIn() {
+    await this.azureService.logIn();
+  }
+
+  async _btnLogOut() {
+    await this.azureService.logOut();
+  }
+
 }
